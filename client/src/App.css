@@ -37,3 +37,19 @@ img {
 .form-control::placeholder {
   color: #bbb !important;
 }
+.edit-link {
+  padding: 7px 10px;
+  font-size: 0.875rem;
+  line-height: normal;
+  border-radius: 0.2rem;
+  color: #fff;
+  background-color: #28a745;
+  border-color: #28a745;
+  margin-right: 10px;
+  position: relative;
+  top: 1px;
+}
+.edit-link:hover {
+  text-decoration: none;
+  color: #ffffff;
+}

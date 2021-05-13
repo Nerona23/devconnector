@@ -18,6 +18,22 @@ const User = require('../../models/User');
 // @access  Public
 router.get('/test', (req, res) => res.json({ msg: 'Users Works' }));
 
+router.get('/all', (req, res) => {
+  const errors = {};
+  console.log('OK')
+  User.find()
+    .populate('user', ['name', 'avatar'])
+    .then(users => {
+      if (!users) {
+        errors.noprofile = 'There are no users';
+        return res.status(404).json(errors);
+      }
+
+      res.json(users);
+    })  
+    .catch(err => res.status(404).json({ user: 'There are no users' }));
+});
+
 // @route   POST api/users/register
 // @desc    Register user
 // @access  Public
@@ -121,6 +137,23 @@ router.get(
       name: req.user.name,
       email: req.user.email
     });
+  }
+);
+
+router.delete(
+  `/user/:id`,
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    console.log('req:',req.params)
+    // Profile.findOne({ user: req.params.id }).then(profile => {
+      User.findById(req.params.id)
+        .then(user => {
+          console.log('user:',user)
+          // Delete
+          user.remove().then(() => res.json({ success: true }));
+        })
+        .catch(err => res.status(404).json({ postnotfound: 'No post found' }));
+    // });
   }
 );
 
