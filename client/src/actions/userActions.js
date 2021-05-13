@@ -1,4 +1,6 @@
 import axios from "axios";
+// import Button from "react-bootstrap/Button";
+import React, { Component } from "react";
 import { setPostLoading } from "./postActions";
 
 import {
@@ -44,6 +46,14 @@ export const deleteUsers = (id) => (dispatch) => {
       })
     );
 };
+export const editUsers= (id) =>(dispatch) =>{
+    console.log("==================",id);
+    return{
+      render(){
+        
+      }
+    }
+}
 
 export const setProfileLoading = () => {
   return {

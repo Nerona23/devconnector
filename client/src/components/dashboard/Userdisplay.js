@@ -6,23 +6,37 @@ import PropTypes from "prop-types";
 import Moment from "react-moment";
 import { getUsers } from "../../actions/userActions";
 import { deleteUsers } from "../../actions/userActions";
+import { editUsers } from "../../actions/userActions";
 import Spinner from "../common/Spinner";
 import UserItem from "./UserItem";
 import Button from "react-bootstrap/Button";
+import Icon from "@material-ui/core/Icon";
+import EditModal from "../../components/edit-modal";
+// import "bootstrap/dist/css/bootstrap.css";
 class Userdisplay extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
+    this.state = {
+      modalState: false,
+      name: '',
+      email: '',
+      date: '',
+      __v: '',
+
+    };
   }
   onDeleteClick(id) {
     this.props.deleteUsers(id);
+    reload_page();
   }
-  Editdata()
-  {
-
+  EditData(id) {
+    // this.setState({ modalState: true });
+    this.props.editUsers(id);
   }
   componentDidMount() {
     this.props.getUsers();
     this.props.deleteUsers();
+    this.props.editUsers();
   }
   render() {
     const { user, loading } = this.props.user;
@@ -37,6 +51,7 @@ class Userdisplay extends Component {
         userItems = <h4>No users found...</h4>;
       }
     }
+    console.log("user");
     return (
       <div>
         <h4 className="mb-4">User Credentials</h4>
@@ -45,8 +60,8 @@ class Userdisplay extends Component {
             <tr>
               <th>UserName</th>
               <th>Email</th>
-              <th>Password</th>
               <th>Date</th>
+              <th>UserRole</th>
               <th>Edit</th>
               <th>Delete</th>
               <th />
@@ -59,17 +74,16 @@ class Userdisplay extends Component {
                   <tr key={index}>
                     <td>{user.name}</td>
                     <td>{user.email}</td>
-                    <td>{user.password}</td>
                     <td>{user.date}</td>
+                    <td>{user.__v == 1 ? "ok" : "no"}</td>
                     <td>
-                    {/* <button type="button" className="btn btn-success" onClick={(e) => {this.EditData(user)}}>Edit</button>   */}
+                      {/* <Button onClick={this.EditData.bind(this,user._id)}>Edit</Button>   */}
+                      <Button onClick={this.EditData.bind(this, user._id)}>
+                        Edit
+                      </Button>
                     </td>
                     <td>
-                      <Button
-                        onClick={this.onDeleteClick.bind(this, user._id)}
-                        size="sm"
-                        variant="danger"
-                      >
+                      <Button onClick={this.onDeleteClick.bind(this, user._id)}>
                         Delete
                       </Button>
                     </td>
@@ -82,7 +96,7 @@ class Userdisplay extends Component {
               </tr>
             )}
           </tbody>
-          {/* {userItems} */}
+          {/* <EditModal openState={this.state.modalState} /> */}
         </table>
       </div>
     );
@@ -97,4 +111,9 @@ Userdisplay.propTypes = {
 const mapStateToProps = (state) => ({
   user: state.user,
 });
-export default connect(mapStateToProps, { getUsers, deleteUsers })(Userdisplay);
+export function reload_page() {
+  window.location.reload();
+}
+export default connect(mapStateToProps, { getUsers, deleteUsers, editUsers })(
+  Userdisplay
+);
