@@ -46,14 +46,14 @@ export const deleteUsers = (id) => (dispatch) => {
       })
     );
 };
-export const editUsers= (id) =>(dispatch) =>{
-    console.log("==================",id);
-    return{
-      render(){
+// export const editUsers= (id) =>(dispatch) =>{
+//     console.log("==================",id);
+//     return{
+//       render(){
         
-      }
-    }
-}
+//       }
+//     }
+// }
 
 export const setProfileLoading = () => {
   return {

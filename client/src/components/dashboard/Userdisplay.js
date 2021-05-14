@@ -6,7 +6,8 @@ import PropTypes from "prop-types";
 import Moment from "react-moment";
 import { getUsers } from "../../actions/userActions";
 import { deleteUsers } from "../../actions/userActions";
-import { editUsers } from "../../actions/userActions";
+import { editUsers } from "../edit-modal/index";
+// import { editModal } from "../edit-modal/index"; 
 import Spinner from "../common/Spinner";
 import UserItem from "./UserItem";
 import Button from "react-bootstrap/Button";
@@ -30,13 +31,15 @@ class Userdisplay extends Component {
     reload_page();
   }
   EditData(id) {
-    // this.setState({ modalState: true });
+    this.setState({ modalState: true });
+    // this.props.editModal(id);
     this.props.editUsers(id);
   }
   componentDidMount() {
     this.props.getUsers();
     this.props.deleteUsers();
     this.props.editUsers();
+    // this.props.editModal();
   }
   render() {
     const { user, loading } = this.props.user;
@@ -78,7 +81,7 @@ class Userdisplay extends Component {
                     <td>{user.__v == 1 ? "ok" : "no"}</td>
                     <td>
                       {/* <Button onClick={this.EditData.bind(this,user._id)}>Edit</Button>   */}
-                      <Button onClick={this.EditData.bind(this, user._id)}>
+                      <Button onClick={this.EditData.bind(this, user)}>
                         Edit
                       </Button>
                     </td>
@@ -96,7 +99,7 @@ class Userdisplay extends Component {
               </tr>
             )}
           </tbody>
-          {/* <EditModal openState={this.state.modalState} /> */}
+          <EditModal openState={this.state.modalState} />
         </table>
       </div>
     );
