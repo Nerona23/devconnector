@@ -1,7 +1,9 @@
-import React, { Component, useEffect } from "react";
+import React, { Component, useEffect, useState } from "react";
 import ReactDOM, { render } from "react-dom";
 import Modal from "react-modal";
 import Form from "react-bootstrap/Form";
+import Button from 'react-bootstrap/Button';
+import { updateUsers } from "../../actions/userActions";
 import { Checkbox } from "@material-ui/core";
 
 const customStyles = {
@@ -15,23 +17,36 @@ const customStyles = {
   },
 };
 
-export const editUsers = (id) => (dispatch) => {
-  if (id) {
-    console.log("===========", id.name);
-  }
-};
+// export const editUsers = (id) => (dispatch) => {
+//   if (id) {
+//     console.log("===========", id.name);
+//   }
+// };
 
 function editModal(props) {
   var subtitle;
   const [modalIsOpen, setIsOpen] = React.useState(false);
+  const [x, setX] = React.useState(false);
+  // const [state, setState] = useState(props.userState&&props.userState);
+  // this.setState({
+  //   name: res.data.name,
+  //   email: res.data.email,
+  //   rollno: res.data.rollno
+  // });
+  // const[]
 
   useEffect(() => {
     setIsOpen(props.openState);
   }, [props]);
+  useEffect(() => {
+    setIsOpen(props.userState);
+  }, [props]);
+  useEffect(() => {
+    setselectedValue(props.userState);
+  }, [props]);
+  console.log("props.id", props.userState);
 
-  //   function openModal() {
-  //     setIsOpen(true);
-  //   }
+  const [selectedName, setselectedValue] = React.useState(props.userState);
 
   function afterOpenModal() {
     // references are now sync'd and can be accessed.
@@ -42,6 +57,21 @@ function editModal(props) {
     setIsOpen(false);
   }
 
+  const StoreTitle = () => {
+    const updateUser = {
+      _id: selectedName._id,
+      name: selectedName.name,
+      email: selectedName.email,
+      date: selectedName.date,
+      __v: selectedName.__v
+    }
+    // this.props.updateUserlist(updateUser, this.props.history);
+    console.log("updateUser",updateUser);
+    // this.props.updateUsers();
+    // this.props.updateUserList(updateUser,this.props.history);
+    
+  }
+
   return (
     <div>
       <Modal
@@ -50,27 +80,55 @@ function editModal(props) {
         onRequestClose={closeModal}
         style={customStyles}
         contentLabel="Example Modal"
+        // ariaHideApp={false}
       >
         <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Edit Users</h2>
         <Form.Label>UserName</Form.Label>
         <Form.Control
           type="text"
-        //   value={"dsfsfd"}
-          // onChange={(e) => setState({...state, name: e.target.value})}
+          value={selectedName && selectedName.name}
+          onChange={(e) =>
+            setselectedValue({ ...selectedName, name: e.target.value })
+          }
         />
         <Form.Label>Email</Form.Label>
         <Form.Control
-        
+          value={selectedName && selectedName.email}
+          onChange={(e) =>
+            setselectedValue({ ...selectedName, email: e.target.value })
+          }
         />
         <Form.Label>date</Form.Label>
         <Form.Control
-        
+          value={selectedName && selectedName.date}
+          onChange={(e) =>
+            setselectedValue({ ...selectedName, date: e.target.value })
+          }
         />
         <br></br>
         <h6>
-          role <Checkbox></Checkbox>
+          role{" "}
+          <div>
+            <input
+              type="checkbox"
+              checked={selectedName && selectedName.__v}
+              onChange={(e) =>
+                setselectedValue({ ...selectedName, __v: e.target.checked })
+              }
+            />
+          </div>
+          {/* // value={props.userState && props.userState.__v}
+          /> */}
         </h6>
-        <button onClick={closeModal}>upgrate</button>
+        <Button
+          variant="danger"
+          size="lg"
+          block="block"
+          type="submit"
+          onClick={() => StoreTitle()}
+        >
+          Update Data
+        </Button>
       </Modal>
     </div>
   );

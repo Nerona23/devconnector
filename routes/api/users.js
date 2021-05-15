@@ -157,4 +157,16 @@ router.delete(
   }
 );
 
+// router.update(
+//   `/user/:id`,
+//   passport.authenticate('jwt',{ session: false}),
+//   (req,res) => {
+//     User.findById(req.params.id)
+//     .then(user =>{
+//       user.update().then(() => res.json({ success: true}));
+//     })
+//     .catch(err => res.status(404).json({ Updatenotfound: 'No update found'}));
+//   }
+// );
+
 module.exports = router;

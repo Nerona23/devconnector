@@ -9,6 +9,7 @@ import {
   CLEAR_CURRENT_PROFILE,
   GET_ERRORS,
   DELETE_USER,
+  UPDATE_USER,
   SET_CURRENT_USER,
 } from "./types";
 
@@ -46,6 +47,23 @@ export const deleteUsers = (id) => (dispatch) => {
       })
     );
 };
+
+export const updateUsers = (id) => (dispatch) => {
+  axios
+  .update(`/api/users/user/${id}`)
+  .then((res) =>
+  dispatch({
+    type: UPDATE_USER,
+    payload: id,
+  })
+  )
+  .catch((err) =>
+  dispatch({
+    type: UPDATE_USER,
+    payload: err.response.data,
+  })
+  )
+}
 // export const editUsers= (id) =>(dispatch) =>{
 //     console.log("==================",id);
 //     return{

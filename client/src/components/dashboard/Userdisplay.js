@@ -6,7 +6,7 @@ import PropTypes from "prop-types";
 import Moment from "react-moment";
 import { getUsers } from "../../actions/userActions";
 import { deleteUsers } from "../../actions/userActions";
-import { editUsers } from "../edit-modal/index";
+// import { editUsers } from "../edit-modal/index";
 // import { editModal } from "../edit-modal/index"; 
 import Spinner from "../common/Spinner";
 import UserItem from "./UserItem";
@@ -31,14 +31,15 @@ class Userdisplay extends Component {
     reload_page();
   }
   EditData(id) {
-    this.setState({ modalState: true });
+    this.setState({ modalState: true});
+    this.setState({userval: id})
     // this.props.editModal(id);
-    this.props.editUsers(id);
+    // this.props.editUsers(id);
   }
   componentDidMount() {
     this.props.getUsers();
     this.props.deleteUsers();
-    this.props.editUsers();
+    // this.props.editUsers();
     // this.props.editModal();
   }
   render() {
@@ -100,6 +101,7 @@ class Userdisplay extends Component {
             )}
           </tbody>
           <EditModal openState={this.state.modalState} />
+          <EditModal userState={this.state.userval}/>
         </table>
       </div>
     );
@@ -117,6 +119,6 @@ const mapStateToProps = (state) => ({
 export function reload_page() {
   window.location.reload();
 }
-export default connect(mapStateToProps, { getUsers, deleteUsers, editUsers })(
+export default connect(mapStateToProps, { getUsers, deleteUsers })(
   Userdisplay
 );
