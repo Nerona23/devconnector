@@ -16,7 +16,15 @@ const User = require('../../models/User');
 // @route   GET api/users/test
 // @desc    Tests users route
 // @access  Public
-router.get('/test', (req, res) => res.json({ msg: 'Users Works' }));
+router.post('/test', async (req, res) => {
+    let data = req.body;
+    console.log('========> ', data);
+    let user = await User.updateOne({_id: data._id}, data);
+    res.json({
+      data,
+      user
+    })
+});
 
 router.get('/all', (req, res) => {
   const errors = {};
@@ -28,9 +36,8 @@ router.get('/all', (req, res) => {
         errors.noprofile = 'There are no users';
         return res.status(404).json(errors);
       }
-
       res.json(users);
-    })  
+    })
     .catch(err => res.status(404).json({ user: 'There are no users' }));
 });
 

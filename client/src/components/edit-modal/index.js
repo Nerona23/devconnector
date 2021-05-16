@@ -5,6 +5,7 @@ import Form from "react-bootstrap/Form";
 import Button from 'react-bootstrap/Button';
 import { updateUsers } from "../../actions/userActions";
 import { Checkbox } from "@material-ui/core";
+// import { reload_page } from "../dashboard/Userdisplay";
 
 const customStyles = {
   content: {
@@ -57,19 +58,33 @@ function editModal(props) {
     setIsOpen(false);
   }
 
+  const options = (data) => {
+      return {
+          headers: {
+              'Authorization': 'Bearer ' + localStorage.getItem('jwtToken'),
+              'Content-Type': 'application/json',
+              'Accept': 'application/json'
+          },
+          method: 'post',
+          body: JSON.stringify(data)
+      };
+  };
+
   const StoreTitle = () => {
     const updateUser = {
       _id: selectedName._id,
       name: selectedName.name,
       email: selectedName.email,
       date: selectedName.date,
-      __v: selectedName.__v
+      __v: (selectedName.__v ? selectedName.__v = 1: selectedName.__v = 0)
     }
-    // this.props.updateUserlist(updateUser, this.props.history);
-    console.log("updateUser",updateUser);
-    // this.props.updateUsers();
-    // this.props.updateUserList(updateUser,this.props.history);
-    
+    fetch("http://localhost:5000/api/users/test", options(updateUser))
+    .then(res => res.json())
+    .then(res => {
+      console.log("ok test!")
+    });
+    reload_page();
+    console.log("updateUser",updateUser)
   }
 
   return (
@@ -132,6 +147,9 @@ function editModal(props) {
       </Modal>
     </div>
   );
+}
+export function reload_page() {
+  window.location.reload();
 }
 
 export default editModal;
